@@ -206,7 +206,7 @@ def lbs(
     device, dtype = betas.device, betas.dtype
 
     # Add shape contribution
-    v_shaped = v_template + blend_shapes(betas, shapedirs) 
+    v_shaped = v_template + blend_shapes(betas, shapedirs)
 
 
     # Get the joints
