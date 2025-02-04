@@ -26,7 +26,7 @@ import torch
 import torch.nn as nn
 
 from .lbs import (
-    lbs, vertices2landmarks, find_dynamic_lmk_idx_and_bcoords, blend_shapes)
+    lbs, lbs_sub, vertices2landmarks, find_dynamic_lmk_idx_and_bcoords, blend_shapes)
 
 from .vertex_ids import vertex_ids as VERTEX_IDS
 from .utils import (
@@ -1236,11 +1236,18 @@ class SMPLX(SMPLH):
                                    self.J_regressor, self.parents,
                                    self.lbs_weights, pose2rot=pose2rot,
                                    )
-        else:
+        elif len(kwargs.values())==1:
             vertices, joints = lbs(shape_components, full_pose, self.v_template+kwargs['D'],
                        shapedirs, self.posedirs,
                        self.J_regressor, self.parents,
                        self.lbs_weights, pose2rot=pose2rot,
+                       )
+        else:
+            sub_lbs_weights = torch.load("/home/fares/ImplicitParametricAvatar/data/W_sub_tensor.pt")
+            vertices, joints = lbs_sub(shape_components, full_pose, self.v_template,
+                       shapedirs, self.posedirs,
+                       self.J_regressor, self.parents,
+                       sub_lbs_weights, D=kwargs['D'], faces_sub=kwargs['faces_sub'], pose2rot=pose2rot, 
                        )
                                    
 
